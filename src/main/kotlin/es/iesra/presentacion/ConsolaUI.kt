@@ -1,6 +1,6 @@
 package es.iesra.presentacion
 
-import es.iesra.dominio.Reserva
+import es.iesra.datos.DaoFichero
 import es.iesra.servicio.IReservaService
 
 /**
@@ -9,6 +9,7 @@ import es.iesra.servicio.IReservaService
  */
 class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
 
+    val dao = DaoFichero()
 
     override fun iniciar() {
         var salir = false
@@ -94,13 +95,13 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
     /**
      * Método para listar todas las reservas registradas.
      */
-    private fun listarReservas() {
+    fun listarReservas() {
+        val listaReservas = dao.listar()
         println("\n--- Lista de Reservas ---")
-        val reservas: List<Reserva> = reservaService.listarReservas()
-        if (reservas.isEmpty()) {
+        if (listaReservas.isEmpty()) {
             println("No hay reservas registradas.")
         } else {
-            reservas.forEach { println(it.toString()) }
+            listaReservas.forEach { println(it) }
         }
     }
 }

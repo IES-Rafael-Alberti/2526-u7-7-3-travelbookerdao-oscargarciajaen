@@ -17,5 +17,7 @@ abstract class Reserva(
         get() = "$id - $descripcion"
 
     // Método para mostrar el detalle de la reserva.
-    open fun mostrarDetalle(): String = detalle
+    override fun toString(): String {
+        return detalle
+    }
 }

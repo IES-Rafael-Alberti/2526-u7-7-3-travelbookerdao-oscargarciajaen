@@ -1,4 +1,4 @@
-package es.iesra.datos
+package es.iesra.repositorio
 
 import es.iesra.dominio.Reserva
 
@@ -7,5 +7,5 @@ import es.iesra.dominio.Reserva
  */
 interface IReservaRepository {
     fun agregar(reserva: Reserva): Boolean
-    fun obtenerTodas(): List<Reserva>
+    fun obtenerTodas(): List<String>
 }
