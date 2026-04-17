@@ -5,7 +5,7 @@ import java.io.File
 
 class DaoHotel() : IDao<ReservaHotel> {
 
-    private val ficheroReservas = File("reservaHotel.txt")
+    private val ficheroReservas = File("salida/reservaHotel.txt")
 
     override fun salvar(reserva: ReservaHotel): Boolean {
 
@@ -37,8 +37,14 @@ class DaoHotel() : IDao<ReservaHotel> {
 
     override fun actualizar(reserva: ReservaHotel): Boolean {
         try {
-            eliminar(reserva)
-            salvar(reserva)
+            val ficheroModificable = ficheroReservas.readLines().toMutableList()
+            for (i in ficheroModificable){
+                if (i.startsWith(reserva.id.toString())) {
+                    val id = i[0]
+                    ficheroModificable.remove(i)
+                    ficheroModificable.add("${id}, ${reserva.descripcion}, ${reserva.ubicacion}, ${reserva.numeroNoches}")
+                }
+            }
             return true
         } catch (e: Exception) {
             println("Error al actualizar la reserva: ${e.message}")
