@@ -1,5 +1,7 @@
 package es.iesra.datos
 
+import es.iesra.dominio.Reserva
+
 interface IDao<T> {
 
     fun salvar(reserva: T): Boolean
@@ -8,5 +10,5 @@ interface IDao<T> {
 
     fun actualizar(reserva: T): Boolean
 
-    fun listar(): List<String>
+    fun listar(): List<Reserva>
 }

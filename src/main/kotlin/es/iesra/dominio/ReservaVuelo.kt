@@ -6,7 +6,7 @@ import java.time.LocalDateTime
  * Clase que representa una Reserva de Vuelo.
  * Hereda de Reserva y agrega atributos específicos: origen, destino y hora de vuelo.
  */
-class ReservaVuelo private constructor(
+class ReservaVuelo constructor(
     id: Int,
     descripcion: String,
     val origen: String,
