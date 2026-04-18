@@ -48,11 +48,11 @@ class ReservaRepository : IReservaRepository {
         daoVuelo.eliminar(id)
     }
 
-    override fun actualizarVuelo() {
+    fun actualizarVuelo(id: String) {
         TODO("Not yet implemented")
     }
 
-    override fun actualizarHotel() {
+    fun actualizarHotel(id: String) {
         TODO("Not yet implemented")
     }
 

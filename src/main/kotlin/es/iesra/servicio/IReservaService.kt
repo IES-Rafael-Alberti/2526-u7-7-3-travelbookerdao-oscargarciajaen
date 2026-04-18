@@ -1,7 +1,5 @@
 package es.iesra.servicio
 
-import es.iesra.dominio.Reserva
-
 
 /**
  * Interfaz que define los servicios disponibles para gestionar reservas.
@@ -14,7 +12,7 @@ interface IReservaService {
     fun eliminarHotel(id: String)
     fun eliminarVuelo(id: String)
     fun actualizarHotel(id: String)
-    fun actualizarVuelo(id: String)
+    fun actualizarVuelo(id: String?, descripcion: String?, origen: String?, destino: String?, hora: String)
     fun obtenerVuelos(): List<String>
     fun obtenerHoteles(): List<String>
 }

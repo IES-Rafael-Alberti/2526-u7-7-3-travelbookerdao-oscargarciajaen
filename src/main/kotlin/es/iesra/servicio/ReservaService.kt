@@ -34,7 +34,7 @@ class ReservaService(private val repositorio: IReservaRepository) : IReservaServ
         repositorio.actualizarReservaHotel()
     }
 
-    override fun actualizarVuelo(id: String) {
+    override fun actualizarVuelo(id: String?, descripcion: String?, origen: String?, destino: String?, hora: String) {
         repositorio.actualizarReservaVuelo()
     }
 

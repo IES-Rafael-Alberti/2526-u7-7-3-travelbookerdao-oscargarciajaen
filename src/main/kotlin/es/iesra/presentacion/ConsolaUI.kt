@@ -137,14 +137,42 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
         when (leerOpcion()) {
             1 -> {
                 val vuelos = repository.obtenerVuelos()
-                vuelos.forEach { println(it) }
-                print("Introduce el id del vuelo que quieras eliminar")
-                val id = readLine()
-                if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
-                    repository.actualizarVuelo(id)
-                } else {
-                    println("Id no válido")
-                }
+                var actualizar: Boolean? = null
+                do {
+                    vuelos.forEach { println(it) }
+                    var idValido = false
+                    val id = readLine()
+                    println("Introduce el id del vuelo que quieras actualizar")
+                    if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
+                        idValido = true
+                    }
+                    println("Introduce la descripcion del vuelo")
+                    var descripcion = readLine()
+                    var descripcionValida = false
+                    if (idValido == true && !descripcion.isNullOrEmpty()) {
+                        descripcionValida = true
+                    }
+                    var origenValido = false
+                    println("Introduce el origen del vuelo")
+                    val origen = readLine()
+                    if (descripcionValida && !origen.isNullOrEmpty()) {
+                        origenValido = true
+                    }
+                    println("Introduce el destino del vuelo")
+                    val destino = readLine()
+                    var destinoValido = false
+                    if (origenValido == true && !destino.isNullOrEmpty()) {
+                        destinoValido = true
+                    }
+                    println("Introduce la hora del vuelo en formato 00:00")
+                    val hora = readLine()
+                    if (destinoValido == true && !hora.isNullOrEmpty() && hora.length == 5 && hora.contains(":")) {
+                        actualizar = true
+                        reservaService.actualizarVuelo(id, descripcion, origen, destino, hora)
+                    }
+                } while (actualizar == null)
+
+
             }
             2 -> {
                 val hoteles = repository.obtenerHoteles()
