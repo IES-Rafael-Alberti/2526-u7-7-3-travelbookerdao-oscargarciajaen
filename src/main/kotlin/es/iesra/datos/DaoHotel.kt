@@ -22,11 +22,11 @@ class DaoHotel() : IDao<ReservaHotel> {
         }
     }
 
-    override fun eliminar(reserva: ReservaHotel): Boolean {
+    override fun eliminar(id: String): Boolean {
         try {
             val contenidoTxt = ficheroReservas.readLines()
             val contenidoMutable = contenidoTxt.toMutableList()
-            contenidoMutable.removeAll { it.startsWith(reserva.id.toString()) }
+            contenidoMutable.removeAll { it.startsWith(id) }
             ficheroReservas.writeText(contenidoMutable.toString() + "\n")
             return true
         } catch (e: Exception) {

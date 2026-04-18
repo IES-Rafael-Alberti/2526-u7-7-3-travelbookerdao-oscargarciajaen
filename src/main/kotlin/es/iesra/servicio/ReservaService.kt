@@ -21,4 +21,31 @@ class ReservaService(private val repositorio: IReservaRepository) : IReservaServ
     }
 
     override fun listarReservas() = repositorio.obtenerTodas()
+
+    override fun eliminarHotel(id: String) {
+        repositorio.eliminarReservaHotel(id)
+    }
+
+    override fun eliminarVuelo(id: String) {
+        repositorio.eliminarReservaVuelo(id)
+    }
+
+    override fun actualizarHotel(id: String) {
+        repositorio.actualizarReservaHotel()
+    }
+
+    override fun actualizarVuelo(id: String) {
+        repositorio.actualizarReservaVuelo()
+    }
+
+    override fun obtenerVuelos(): List<String>{
+        val vuelos = repositorio.obtenerVuelos()
+        return vuelos
+    }
+
+    override fun obtenerHoteles(): List<String> {
+        val hoteles = repositorio.obtenerHoteles()
+        return hoteles
+    }
+
 }

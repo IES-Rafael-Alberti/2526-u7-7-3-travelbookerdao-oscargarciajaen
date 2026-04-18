@@ -22,13 +22,41 @@ class ReservaRepository : IReservaRepository {
         return agregado
     }
 
-    override fun obtenerTodas(): List<String>{
+    override fun obtenerVuelos(): MutableList<String>{
+        val reservas = mutableListOf<String>()
+        val listaVuelos = daoVuelo.listar()
+        listaVuelos.forEach {reservas.add("${it.id}, ${it.descripcion}, ${it.horaVuelo}, ${it.origen}, ${it.destino}")}
+        return reservas
+    }
+
+    override fun obtenerHoteles(): MutableList<String>{
         val reservas = mutableListOf<String>()
         val listaHoteles = daoHotel.listar()
-        val listaVuelos = daoVuelo.listar()
         listaHoteles.forEach {reservas.add("${it.id} ${it.descripcion},${it.ubicacion},${it.numeroNoches}")}
-        listaVuelos.forEach {reservas.add("${it.id}, ${it.descripcion}, ${it.horaVuelo}, ${it.origen}, ${it.destino}")}
+        return reservas
+    }
+    override fun obtenerTodas(): List<String>{
+        val reservas = mutableListOf<String>()
+        val vuelos = obtenerVuelos()
+        val hoteles = obtenerHoteles()
+        vuelos.forEach { reservas.add(it) }
+        hoteles.forEach {reservas.add(it)}
         return reservas.toList()
+    }
 
+    override fun eliminarReservaVuelo(id: String) {
+        daoVuelo.eliminar(id)
+    }
+
+    override fun actualizarVuelo() {
+        TODO("Not yet implemented")
+    }
+
+    override fun actualizarHotel() {
+        TODO("Not yet implemented")
+    }
+
+    override fun eliminarReservaHotel(id: String) {
+        daoHotel.eliminar(id)
     }
 }

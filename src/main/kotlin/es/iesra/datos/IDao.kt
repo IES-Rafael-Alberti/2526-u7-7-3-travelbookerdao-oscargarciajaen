@@ -6,7 +6,7 @@ interface IDao<T> {
 
     fun salvar(reserva: T): Boolean
 
-    fun eliminar(reserva: T): Boolean
+    fun eliminar(id: String): Boolean
 
     fun actualizar(reserva: T): Boolean
 
