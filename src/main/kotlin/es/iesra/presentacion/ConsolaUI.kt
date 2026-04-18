@@ -1,6 +1,6 @@
 package es.iesra.presentacion
 
-import es.iesra.dominio.Reserva
+import es.iesra.repositorio.ReservaRepository
 import es.iesra.servicio.IReservaService
 
 /**
@@ -9,6 +9,7 @@ import es.iesra.servicio.IReservaService
  */
 class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
 
+    val repository = ReservaRepository()
 
     override fun iniciar() {
         var salir = false
@@ -17,7 +18,9 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
             when (leerOpcion()) {
                 1 -> crearReserva()
                 2 -> listarReservas()
-                3 -> {
+                3 -> eliminarReserva()
+                4 -> actualizarReserva()
+                5 -> {
                     println("Saliendo de la aplicación. ¡Hasta luego!")
                     salir = true
                 }
@@ -31,7 +34,9 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
         println("\n----- Gestor de Reservas -----")
         println("1. Crear nueva reserva")
         println("2. Listar reservas")
-        println("3. Salir")
+        println("3. Eliminar reserva")
+        println("4. Actualizar reserva")
+        println("5. Salir")
         print("Seleccione una opción: ")
     }
 
@@ -91,16 +96,110 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
         }
     }
 
+    fun eliminarReserva(){
+        println("\nSeleccione el tipo de reserva a eliminar:")
+        println("1. Reserva de Vuelo")
+        println("2. Reserva de Hotel")
+        print("Opción: ")
+        when (leerOpcion()) {
+            1 -> {
+                    val vuelos = reservaService.obtenerVuelos()
+                    vuelos.forEach { println(it) }
+                    print("Introduce el id del vuelo que quieras eliminar")
+                    val id = readLine()
+                    if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
+                        repository.eliminarReservaVuelo(id)
+                    } else {
+                        println("Id no válido")
+                    }
+                }
+            2 -> {
+                    val hoteles = repository.obtenerHoteles()
+                    hoteles.forEach {println(it)}
+                    print("Introduce el id del vuelo que quieras eliminar")
+                    val id = readLine()
+                    if (id != null && id.toInt() > 0 && id.toInt() < hoteles.size) {
+                        repository.eliminarReservaHotel(id)
+                    } else {
+                        println("Id no válido")
+                    }
+            }
+
+            else -> println("Opción no válida.")
+        }
+    }
+
+    fun actualizarReserva(){
+        println("\nSeleccione el tipo de reserva a eliminar:")
+        println("1. Reserva de Vuelo")
+        println("2. Reserva de Hotel")
+        print("Opción: ")
+        when (leerOpcion()) {
+            1 -> {
+                val vuelos = repository.obtenerVuelos()
+                var actualizar: Boolean? = null
+                do {
+                    vuelos.forEach { println(it) }
+                    var idValido = false
+                    val id = readLine()
+                    println("Introduce el id del vuelo que quieras actualizar")
+                    if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
+                        idValido = true
+                    }
+                    println("Introduce la descripcion del vuelo")
+                    var descripcion = readLine()
+                    var descripcionValida = false
+                    if (idValido == true && !descripcion.isNullOrEmpty()) {
+                        descripcionValida = true
+                    }
+                    var origenValido = false
+                    println("Introduce el origen del vuelo")
+                    val origen = readLine()
+                    if (descripcionValida && !origen.isNullOrEmpty()) {
+                        origenValido = true
+                    }
+                    println("Introduce el destino del vuelo")
+                    val destino = readLine()
+                    var destinoValido = false
+                    if (origenValido == true && !destino.isNullOrEmpty()) {
+                        destinoValido = true
+                    }
+                    println("Introduce la hora del vuelo en formato 00:00")
+                    val hora = readLine()
+                    if (destinoValido == true && !hora.isNullOrEmpty() && hora.length == 5 && hora.contains(":")) {
+                        actualizar = true
+                        reservaService.actualizarVuelo(id, descripcion, origen, destino, hora)
+                    }
+                } while (actualizar == null)
+
+
+            }
+            2 -> {
+                val hoteles = repository.obtenerHoteles()
+                hoteles.forEach {println(it)}
+                print("Introduce el id del vuelo que quieras eliminar")
+                val id = readLine()
+                if (id != null && id.toInt() > 0 && id.toInt() < hoteles.size) {
+                    repository.actualizarHotel(id)
+                } else {
+                    println("Id no válido")
+                }
+            }
+
+            else -> println("Opción no válida.")
+        }
+    }
+
     /**
      * Método para listar todas las reservas registradas.
      */
-    private fun listarReservas() {
+    fun listarReservas() {
+        val reservas = repository.obtenerTodas()
         println("\n--- Lista de Reservas ---")
-        val reservas: List<Reserva> = reservaService.listarReservas()
         if (reservas.isEmpty()) {
             println("No hay reservas registradas.")
         } else {
-            reservas.forEach { println(it.toString()) }
+            reservas.forEach { println(it) }
         }
     }
 }

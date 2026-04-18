@@ -1,12 +1,13 @@
 package es.iesra.dominio
 
+import java.io.File
 import java.time.LocalDateTime
 
 /**
  * Clase que representa una Reserva de Hotel.
  * Hereda de Reserva y agrega atributos específicos: ubicación y número de noches.
  */
-class ReservaHotel private constructor(
+class ReservaHotel (
     id: Int,
     descripcion: String,
     val ubicacion: String,
@@ -17,6 +18,7 @@ class ReservaHotel private constructor(
     override val detalle: String
         get() = "$id - $ubicacion - $descripcion"
 
+
     // Sobrescritura de toString para mostrar la información formateada.
     override fun toString(): String {
         return "Reserva de Hotel: $detalle [Noches: $numeroNoches, Fecha creación: $fechaCreacion]"
@@ -24,7 +26,8 @@ class ReservaHotel private constructor(
 
     companion object {
         // Generador de ids únicos para ReservaHotel.
-        private var contador: Int = 1
+
+        var contador = 1
 
         /**
          * Método de clase para crear una nueva instancia de ReservaHotel.
