@@ -27,7 +27,7 @@ class DaoHotel() : IDao<ReservaHotel> {
             val contenidoTxt = ficheroReservas.readLines()
             val contenidoMutable = contenidoTxt.toMutableList()
             contenidoMutable.removeAll { it.startsWith(id) }
-            ficheroReservas.writeText(contenidoMutable.toString() + "\n")
+            ficheroReservas.writeText(contenidoMutable.joinToString("\n"))
             return true
         } catch (e: Exception) {
             println("Error al eliminar la reserva: ${e.message}")
@@ -35,17 +35,20 @@ class DaoHotel() : IDao<ReservaHotel> {
         }
     }
 
-    override fun actualizar(reserva: ReservaHotel): Boolean {
+    fun actualizar(id: String?, descripcion: String?, ubicacion: String?, numeroNoches: Int?): Boolean {
         try {
+            val fichero = ficheroReservas.readLines()
             val ficheroModificable = ficheroReservas.readLines().toMutableList()
-            for (i in ficheroModificable){
-                if (i.startsWith(reserva.id.toString())) {
-                    val id = i[0]
+            for (i in fichero){
+                if (id != null && i.startsWith(id)) {
                     ficheroModificable.remove(i)
-                    ficheroModificable.add("${id}, ${reserva.descripcion}, ${reserva.ubicacion}, ${reserva.numeroNoches}")
+                    val reservaAñadir = "${id}|${descripcion}|${ubicacion}|${numeroNoches}"
+                    ficheroModificable.add(reservaAñadir)
+                    ficheroReservas.writeText(ficheroModificable.toString().replace("[", "").replace("]", "") + "\n")
+                    return true
                 }
             }
-            return true
+            return false
         } catch (e: Exception) {
             println("Error al actualizar la reserva: ${e.message}")
             return false

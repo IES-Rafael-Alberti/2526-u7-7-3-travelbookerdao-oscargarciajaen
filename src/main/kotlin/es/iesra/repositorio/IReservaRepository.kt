@@ -12,6 +12,6 @@ interface IReservaRepository {
     fun obtenerVuelos():MutableList<String>
     fun eliminarReservaHotel(id: String)
     fun eliminarReservaVuelo(id: String)
-    fun actualizarVuelo()
-    fun actualizarHotel()
+    fun actualizarVuelo(id: String?, descripcion: String?, origen: String?, destino: String?, hora: String)
+    fun actualizarHotel(id: String?, descripcion: String?, ubicacion: String?, numeroNoches: Int?)
 }

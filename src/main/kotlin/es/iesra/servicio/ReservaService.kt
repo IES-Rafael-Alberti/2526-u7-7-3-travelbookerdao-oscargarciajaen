@@ -30,12 +30,12 @@ class ReservaService(private val repositorio: IReservaRepository) : IReservaServ
         repositorio.eliminarReservaVuelo(id)
     }
 
-    override fun actualizarHotel(id: String) {
-        repositorio.actualizarReservaHotel()
+    override fun actualizarHotel(id: String?, descripcion: String?, ubicacion: String?, numeroNoches: Int?) {
+        repositorio.actualizarHotel(id, descripcion, ubicacion, numeroNoches)
     }
 
     override fun actualizarVuelo(id: String?, descripcion: String?, origen: String?, destino: String?, hora: String) {
-        repositorio.actualizarReservaVuelo()
+        repositorio.actualizarVuelo(id, descripcion, origen, destino, hora)
     }
 
     override fun obtenerVuelos(): List<String>{

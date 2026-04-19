@@ -107,7 +107,7 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
                     vuelos.forEach { println(it) }
                     print("Introduce el id del vuelo que quieras eliminar")
                     val id = readLine()
-                    if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
+                    if (id != null && id.toInt() > 0 && id.toInt() <= vuelos.size) {
                         repository.eliminarReservaVuelo(id)
                     } else {
                         println("Id no válido")
@@ -118,7 +118,7 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
                     hoteles.forEach {println(it)}
                     print("Introduce el id del vuelo que quieras eliminar")
                     val id = readLine()
-                    if (id != null && id.toInt() > 0 && id.toInt() < hoteles.size) {
+                    if (id != null && id.toInt() > 0 && id.toInt() <= hoteles.size) {
                         repository.eliminarReservaHotel(id)
                     } else {
                         println("Id no válido")
@@ -143,7 +143,7 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
                     var idValido = false
                     val id = readLine()
                     println("Introduce el id del vuelo que quieras actualizar")
-                    if (id != null && id.toInt() > 0 && id.toInt() < vuelos.size) {
+                    if (id != null && id.toInt() > 0 && id.toInt() <= vuelos.size) {
                         idValido = true
                     }
                     println("Introduce la descripcion del vuelo")
@@ -172,18 +172,37 @@ class ConsolaUI(private val reservaService: IReservaService) : IUserInterface {
                     }
                 } while (actualizar == null)
 
-
             }
             2 -> {
                 val hoteles = repository.obtenerHoteles()
-                hoteles.forEach {println(it)}
-                print("Introduce el id del vuelo que quieras eliminar")
-                val id = readLine()
-                if (id != null && id.toInt() > 0 && id.toInt() < hoteles.size) {
-                    repository.actualizarHotel(id)
-                } else {
-                    println("Id no válido")
-                }
+                var actualizar: Boolean? = null
+                do {
+                    hoteles.forEach { println(it) }
+                    var idValido = false
+                    println("Introduce el id del hotel que quieras actualizar")
+                    val id = readLine()
+                    if (id != null && id.toInt() > 0 && id.toInt() <= hoteles.size) {
+                        idValido = true
+                    }
+                    println("Introduce la descripcion del hotel")
+                    var descripcion = readLine()
+                    var descripcionValida = false
+                    if (idValido == true && !descripcion.isNullOrEmpty()) {
+                        descripcionValida = true
+                    }
+                    var ubicacionValido = false
+                    println("Introduce la ubicación del hotel")
+                    val ubicacion = readLine()
+                    if (descripcionValida && !ubicacion.isNullOrEmpty()) {
+                        ubicacionValido = true
+                    }
+                    println("Introduce el número de noches")
+                    val numNoches = readLine()
+                    if (ubicacionValido == true && !numNoches.isNullOrEmpty() && numNoches.all {it.isDigit()}) {
+                        actualizar = true
+                        reservaService.actualizarHotel(id, descripcion, ubicacion, numNoches.toInt())
+                    }
+                } while (actualizar == null)
             }
 
             else -> println("Opción no válida.")

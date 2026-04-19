@@ -11,7 +11,7 @@ interface IReservaService {
     fun listarReservas(): List<String>
     fun eliminarHotel(id: String)
     fun eliminarVuelo(id: String)
-    fun actualizarHotel(id: String)
+    fun actualizarHotel(id: String?, descripcion: String?, ubicacion: String?, numeroNoches: Int?)
     fun actualizarVuelo(id: String?, descripcion: String?, origen: String?, destino: String?, hora: String)
     fun obtenerVuelos(): List<String>
     fun obtenerHoteles(): List<String>

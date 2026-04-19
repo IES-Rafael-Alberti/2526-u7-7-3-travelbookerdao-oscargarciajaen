@@ -1,7 +1,5 @@
 package es.iesra.datos
 
-import es.iesra.dominio.Reserva
-import es.iesra.dominio.ReservaHotel
 import es.iesra.dominio.ReservaVuelo
 import java.io.File
 
@@ -25,7 +23,7 @@ class DaoVuelo(): IDao<ReservaVuelo> {
             val contenidoTxt = ficheroReservas.readLines()
             val contenidoMutable = contenidoTxt.toMutableList()
             contenidoMutable.removeAll { it.startsWith(id) }
-            ficheroReservas.writeText(contenidoMutable.toString() + "\n")
+            ficheroReservas.writeText(contenidoMutable.joinToString("\n"))
             return true
         } catch (e: Exception) {
             println("Error al eliminar la reserva: ${e.message}")
@@ -33,17 +31,20 @@ class DaoVuelo(): IDao<ReservaVuelo> {
         }
     }
 
-    override fun actualizar(reserva: ReservaVuelo): Boolean {
+    fun actualizar(id : String?, descripcion: String?, origen: String?, destino: String?, hora: String): Boolean {
         try {
+            val fichero = ficheroReservas.readLines()
             val ficheroModificable = ficheroReservas.readLines().toMutableList()
-            for (i in ficheroModificable){
-                if (i.startsWith(reserva.id.toString())) {
-                    val id = i[0]
+            for (i in fichero){
+                if (id != null && i.startsWith(id)) {
                     ficheroModificable.remove(i)
-                    ficheroModificable.add("${id}, ${reserva.descripcion}, ${reserva.origen}, ${reserva.destino}, ${reserva.horaVuelo}")
+                    val reservaAñadir =  "${id}, ${descripcion}, ${origen}, ${destino}, ${hora}"
+                    ficheroModificable.add(reservaAñadir)
+                    ficheroReservas.writeText(ficheroModificable.toString().replace("[", "").replace("]", "") + "\n")
+                    return true
                 }
             }
-            return true
+            return false
         } catch (e: Exception) {
             println("Error al actualizar la reserva: ${e.message}")
             return false

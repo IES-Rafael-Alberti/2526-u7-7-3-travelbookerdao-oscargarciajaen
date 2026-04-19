@@ -8,7 +8,5 @@ interface IDao<T> {
 
     fun eliminar(id: String): Boolean
 
-    fun actualizar(reserva: T): Boolean
-
     fun listar(): List<Reserva>
 }
